@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block start %}
+<div class="mt-5" style="margin-left: 10%;">
+    <h4>Rank:{{current_rank}}</h4>
+    <h4>Total Marks:{{total_marks.total_marks}}</h4>
+</div>
+<hr>
+<div style="max-width: 1000px; margin: auto;">
+    <table class="table table-striped-columns mt-5">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">Subject</th>
+            <th scope="col">Marks</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in queryset %}
+            <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>
+                {{student.subject.subject_name}}
+            </td>
+            <td>
+                {{student.marks}}/100
+            </td>
+               
+            </tr>
+            {% endfor %}
+        </tbody>
+        
+    </table>
+</div>    
+{% endblock %}

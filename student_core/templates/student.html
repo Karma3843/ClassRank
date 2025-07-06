@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+
+{% block start %}
+<div class="mt-5">
+    <form class="d-flex" style="max-width: 800px; margin:auto ;"  role="search">
+        <input class="form-control me-2" name="search" type="search" placeholder="Search" aria-label="Search"/>
+        <button class="btn btn-success" type="submit">Search</button>
+    </form>
+</div>
+<div style="max-width: 1000px; margin: auto;">
+    <table class="table table-striped-columns mt-5">
+        <thead>
+            <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">Department</th>
+            <th scope="col">Name</th>
+            <th scope="col">Email</th>
+            <th scope="col">Age</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in page_obj %}
+            <tr>
+            <th scope="row">{{forloop.counter}}</th>
+            <td>
+                <a href="/marks/{{student.student_id}}">{{student.student_id}}</a>
+            </td>
+            <td>{{student.department}}</td>
+            <td>{{student.student_name}}</td>
+            <td>{{student.student_email}}</td>
+            <td>{{student.student_age}}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>    
+
+<nav aria-label="Student pagination">
+    <ul class="pagination justify-content-center">
+      <!-- Previous button -->
+      <li class="page-item {% if not page_obj.has_previous %}disabled{% endif %}">
+        <a class="page-link" href="{% if page_obj.has_previous %}?page={{ page_obj.previous_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% else %}#{% endif %}" aria-label="Previous">
+          <span aria-hidden="true">&laquo;</span>
+        </a>
+      </li>
+      
+      <!-- Page numbers -->
+      {% for i in page_obj.paginator.page_range %}
+        {% if page_obj.number == i %}
+          <li class="page-item active" aria-current="page">
+            <span class="page-link">{{ i }}</span>
+          </li>
+        {% elif i > page_obj.number|add:"-3" and i < page_obj.number|add:"3" %}
+          <li class="page-item">
+            <a class="page-link" href="?page={{ i }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}">{{ i }}</a>
+          </li>
+        {% endif %}
+      {% endfor %}
+      
+      <!-- Next button -->
+      <li class="page-item {% if not page_obj.has_next %}disabled{% endif %}">
+        <a class="page-link" href="{% if page_obj.has_next %}?page={{ page_obj.next_page_number }}{% if request.GET.search %}&search={{ request.GET.search }}{% endif %}{% else %}#{% endif %}" aria-label="Next">
+          <span aria-hidden="true">&raquo;</span>
+        </a>
+      </li>
+    </ul>
+  </nav>
+{% endblock %}
